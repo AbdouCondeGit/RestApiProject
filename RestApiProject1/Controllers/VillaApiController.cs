@@ -16,7 +16,8 @@ namespace RestApiProject1.Controllers
         private readonly IMapper _mapper;
         //private readonly ILogger _logger;
 
-        public VillaApiController(IUnitOfWork unitOfWork, IMapper mapper) {
+        public VillaApiController(IUnitOfWork unitOfWork, IMapper mapper)
+        {
             this._unitOfWork = unitOfWork;
             this._mapper = mapper;
             //this._logger = logger;
@@ -25,32 +26,58 @@ namespace RestApiProject1.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IEnumerable<VillaDTO>>> getMagicVillas()
+        public async Task<ActionResult<ApiResponse>> getMagicVillas()
         {
-            var villas = await _unitOfWork.villaRepository.GetAllAsync();
-            if (villas == null)
+            ApiResponse apiResponse = new ApiResponse();
+            try
             {
-                return NotFound();
+                var villas = await _unitOfWork.villaRepository.GetAllAsync();
+                if (villas == null)
+                {
+                    return NotFound();
+                }
+                apiResponse.IsSuccess = true;
+                apiResponse.statusCode = System.Net.HttpStatusCode.OK;
+                apiResponse.result = (_mapper.Map<List<VillaDTO>>(villas));
+                apiResponse.ErrorMessage = null;
+                return Ok(apiResponse);
             }
-            //using(StreamWriter fichier = new StreamWriter(@"/RestApiProject1/fichier1.txt"))
-            //{ 
-            //    Console.SetOut(fichier);
-            //    Console.WriteLine("En train de retourner la liste de toutes les villas");
-            //}
-            return Ok(_mapper.Map<List<VillaDTO>>(villas));
+            catch (Exception ex)
+            {
+                apiResponse.IsSuccess = false;
+                apiResponse.ErrorMessage = new List<string> { ex.Message.ToString() };
+                return BadRequest(apiResponse);
+            }
+
         }
 
-        [HttpGet("{id:int}", Name ="GetVilla")]
+        [HttpGet("{id:int}", Name = "GetVilla")]
         [ProducesResponseType(404)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<VillaDTO>> getMagicVilla(int? id)
+        public async Task<ActionResult<ApiResponse>> getMagicVilla(int? id)
         {
-            var villa = await _unitOfWork.villaRepository.getAsync(u=>u.Id==id);
-            if (villa == null)
+            ApiResponse apiResponse = new ApiResponse();
+            try
             {
-                return NotFound();
+                var villa = await _unitOfWork.villaRepository.getAsync(u => u.Id == id);
+                if (villa == null)
+                {
+                    apiResponse.statusCode = System.Net.HttpStatusCode.NotFound;
+                    apiResponse.IsSuccess = false;
+                    return NotFound(apiResponse);
+                }
+                apiResponse.IsSuccess = true;
+                apiResponse.statusCode = System.Net.HttpStatusCode.OK;
+                apiResponse.result = (_mapper.Map<VillaDTO>(villa));
+                apiResponse.ErrorMessage = null;
+                return Ok(apiResponse);
             }
-            return Ok(_mapper.Map<VillaDTO>(villa));
+            catch (Exception ex)
+            {
+                apiResponse.IsSuccess = false;
+                apiResponse.ErrorMessage = new List<string> { ex.Message.ToString() };
+                return BadRequest(apiResponse);
+            }
         }
 
         [HttpPost]
@@ -58,41 +85,79 @@ namespace RestApiProject1.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<VillaDTO>> CreateVilla([FromBody] VillaCreateDTO villa)
+        public async Task<ActionResult<ApiResponse>> CreateVilla([FromBody] VillaCreateDTO villa)
         {
-            if (villa == null)
+            ApiResponse apiResponse = new ApiResponse();
+            try
             {
-                return BadRequest();
+                if (villa == null)
+                {
+                    apiResponse.statusCode = System.Net.HttpStatusCode.NotFound;
+                    apiResponse.IsSuccess = false;
+                    return BadRequest(apiResponse);
+                }
+                if (villa.Details.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Length < 3)
+                {
+                    ModelState.AddModelError("CustomError", "Yous muster enter at least three details separated by commas");
+                    apiResponse.statusCode = System.Net.HttpStatusCode.InternalServerError;
+                    apiResponse.IsSuccess = false;
+                    return BadRequest(apiResponse);
+                }
+                Villa myVilla = _mapper.Map<Villa>(villa);
+                apiResponse.IsSuccess = true;
+                apiResponse.statusCode = System.Net.HttpStatusCode.Created;
+                apiResponse.result = (myVilla);
+                await _unitOfWork.villaRepository.CreateAsync(myVilla);
+                await _unitOfWork.CommitAsync();
+                return CreatedAtRoute("GetVilla", new { id = myVilla.Id }, apiResponse);
             }
-            if (villa.Details.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Length < 3)
+            catch (Exception ex)
             {
-                ModelState.AddModelError("CustomError", "Yous muster enter at least three details separated by commas");
-                 return StatusCode(StatusCodes.Status500InternalServerError);
+                apiResponse.IsSuccess = false;
+                apiResponse.ErrorMessage = new List<string> { ex.Message.ToString() };
+                return BadRequest(apiResponse);
             }
-            Villa myVilla=_mapper.Map<Villa>(villa);
-            await _unitOfWork.villaRepository.CreateAsync(myVilla);
-            await _unitOfWork.CommitAsync();
-            return CreatedAtRoute("GetVilla",new { id=myVilla.Id }, myVilla);
+
 
         }
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> EditVilla([FromBody] VillaUpdateDTO villaUpdateDTO) { 
-        
-            if (villaUpdateDTO == null ||villaUpdateDTO.Id==0) {
-                return BadRequest(villaUpdateDTO);    
+        public async Task<ActionResult<ApiResponse>> EditVilla([FromBody] VillaUpdateDTO villaUpdateDTO)
+        {
+            ApiResponse apiResponse = new ApiResponse();
+            try
+            {
+                if (villaUpdateDTO == null || villaUpdateDTO.Id == 0)
+                {
+                    apiResponse.statusCode = System.Net.HttpStatusCode.NotFound;
+                    apiResponse.IsSuccess = false;
+                    return BadRequest(apiResponse);
+                }
+                Villa villa = _unitOfWork.villaRepository.getAsync(u => u.Id == villaUpdateDTO.Id, false).GetAwaiter().GetResult();
+                if (villa == null)
+                {
+                    apiResponse.statusCode = System.Net.HttpStatusCode.NotFound;
+                    apiResponse.IsSuccess = false;
+                    return NotFound(apiResponse);
+                }
+                villa = _mapper.Map<Villa>(villaUpdateDTO);
+                _unitOfWork.villaRepository.UpdateAsync(villa).GetAwaiter().GetResult();
+                await _unitOfWork.CommitAsync();
+                apiResponse.IsSuccess = true;
+                apiResponse.statusCode = System.Net.HttpStatusCode.NoContent;
+                return Ok(apiResponse);
+
             }
-           Villa villa=_unitOfWork.villaRepository.getAsync(u=>u.Id == villaUpdateDTO.Id,false).GetAwaiter().GetResult();
-            if (villa == null){
-                return NotFound(villaUpdateDTO);
+            catch (Exception ex)
+            {
+                apiResponse.IsSuccess = false;
+                apiResponse.ErrorMessage = new List<string> { ex.Message.ToString() };
+                return BadRequest(apiResponse);
             }
-            villa=_mapper.Map<Villa>(villaUpdateDTO);
-            _unitOfWork.villaRepository.UpdateAsync(villa).GetAwaiter().GetResult();
-            await _unitOfWork.CommitAsync();
-            return NoContent();
-                   
+
+
         }
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -100,20 +165,35 @@ namespace RestApiProject1.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteVilla(int id)
         {
-            if (id == 0)
+            ApiResponse apiResponse = new ApiResponse();
+            try
             {
-                return BadRequest();
+                if (id == 0)
+                {
+                    apiResponse.statusCode = System.Net.HttpStatusCode.BadRequest;
+                    apiResponse.IsSuccess = false;
+                    return BadRequest(apiResponse);
+                }
+                var villa = await _unitOfWork.villaRepository.getAsync(u => u.Id == id);
+                if (villa == null)
+                {
+                    apiResponse.statusCode = System.Net.HttpStatusCode.NotFound;
+                    apiResponse.IsSuccess = false;
+                    return BadRequest(apiResponse);
+                }
+                await _unitOfWork.villaRepository.RemoveAsync(villa);
+                await _unitOfWork.CommitAsync();
+                apiResponse.IsSuccess = true;
+                apiResponse.statusCode = System.Net.HttpStatusCode.NoContent;
+                return Ok(apiResponse);
+
             }
-            var villa = await _unitOfWork.villaRepository.getAsync(u => u.Id == id);
-            if (villa == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                apiResponse.IsSuccess = false;
+                apiResponse.ErrorMessage = new List<string> { ex.Message.ToString() };
+                return BadRequest(apiResponse);
             }
-            await _unitOfWork.villaRepository.RemoveAsync(villa);
-            await _unitOfWork.CommitAsync();
-            return NoContent();
         }
-
-
     }
 }
