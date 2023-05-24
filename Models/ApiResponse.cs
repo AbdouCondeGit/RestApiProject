@@ -9,9 +9,9 @@ namespace Models
 {
     public class ApiResponse
     {
-        HttpStatusCode statusCode;
-        bool IsSuccess=true;
-        object result;
+        public HttpStatusCode statusCode { get; set; }
+        public bool IsSuccess { get; set; } = true;
+        public object result { get; set; }
         public List<String> ErrorMessage { get; set; } = new List<String>();
     }
 }
