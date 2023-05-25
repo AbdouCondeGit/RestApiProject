@@ -9,9 +9,11 @@ namespace RestApiProject1.Repository
         private readonly ApplicationDbContext _db;
 
         public IVillaRepository<Villa> villaRepository { get; set; }
+        public IVillaValueRepository<VillaValue> villaValueRepository { get; set; }
         public UnitOfWork(ApplicationDbContext db)
         {
             villaRepository=new VillaRepository(db);
+            villaValueRepository=new VillaValueRepository(db);
             this._db = db;
         }
 

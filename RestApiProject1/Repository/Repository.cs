@@ -22,18 +22,18 @@ namespace RestApiProject1.Repository
            // _db.SaveChanges();
         }
 
-        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>> filter = null, string? includeNaviProperties = null)
+        public async Task<List<T>> GetAllAsync(string? includeNaviProperties = null)
         {
             IQueryable<T> queryable = _dbSet;
-            if(filter != null)
-            {
-                queryable = queryable.Where(filter);
-            }
+            //if(filter != null)
+            //{
+            //    queryable = queryable.Where(filter);
+            //}
             if(includeNaviProperties != null)
             {
                 foreach (string navigationProperty in includeNaviProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    queryable.Include(navigationProperty);
+                   queryable= queryable.Include(navigationProperty);
                 }
             }
             
@@ -57,7 +57,7 @@ namespace RestApiProject1.Repository
             {
                 foreach (string navigationProperty in includeNaviProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    queryable.Include(navigationProperty);
+                    queryable=queryable.Include(navigationProperty);
                 }
             }
             
