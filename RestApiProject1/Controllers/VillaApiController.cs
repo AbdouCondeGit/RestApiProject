@@ -12,6 +12,7 @@ namespace RestApiProject1.Controllers
     //[Route("api/VillaApi")]
     [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")] 
     public class VillaApiController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
