@@ -5,10 +5,10 @@ namespace RespApiProject2_Consumer.Service.IService
 {
     public interface IVillaService
     {
-        Task<T> GetVillaAsync<T>(int id);
-        Task<T> GetAllVillasAsync<T>();
-        Task<T> CreateVillAsynca<T>(VillaCreateDTO villaCreateDTO);
-        Task<T> UpdateVillaAsync<T>(VillaUpdateDTO villaUpdateDTO);
-        Task<T> DeleteVillaAsync<T>(int id);
+        Task<T> GetVillaAsync<T>(int id, string token);
+        Task<T> GetAllVillasAsync<T>(string token);
+        Task<T> CreateVillAsynca<T>(VillaCreateDTO villaCreateDTO, string token);
+        Task<T> UpdateVillaAsync<T>(VillaUpdateDTO villaUpdateDTO, string token);
+        Task<T> DeleteVillaAsync<T>(int id, string token);
     }
 }

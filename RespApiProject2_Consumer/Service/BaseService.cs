@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using RespApiProject2_Consumer.Models;
 using RespApiProject2_Consumer.Service.IService;
+using System.Net.Http.Headers;
 using System.Text;
 using Utilities;
 
@@ -46,7 +47,10 @@ namespace RespApiProject2_Consumer.Service
                         break;
 
                 }
-
+                if (!string.IsNullOrEmpty(apiRequest.token))
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiRequest.token);
+                }
                 HttpResponseMessage responseMessage = client.SendAsync(message).GetAwaiter().GetResult();
                 String responseContent = responseMessage.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                 T response = JsonConvert.DeserializeObject<T>(responseContent);

@@ -13,6 +13,7 @@ namespace RespApiProject2_Consumer.Models
         public ApiRequestVerb apiRequestType;
         public String baseUrl;
         public object RequetPayload;
+        public string token;
 
     }
 }

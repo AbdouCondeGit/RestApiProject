@@ -5,6 +5,7 @@ using RespApiProject2_Consumer.Models.Dtos;
 using RespApiProject2_Consumer.Service;
 using RespApiProject2_Consumer.Service.IService;
 using System.Diagnostics;
+using Utilities;
 
 namespace RespApiProject2_Consumer.Controllers
 {
@@ -22,7 +23,7 @@ namespace RespApiProject2_Consumer.Controllers
         public async Task<ActionResult<ApiResponse>> Index()
         {
             //List<VillaDTO> villas = new();
-            ApiResponse response = _villaService.GetAllVillasAsync<ApiResponse>().GetAwaiter().GetResult();
+            ApiResponse response = _villaService.GetAllVillasAsync<ApiResponse>(HttpContext.Session.GetString(SD.token)).GetAwaiter().GetResult();
             if (response != null && response.IsSuccess)
             {
                 // villas = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(response.result));
