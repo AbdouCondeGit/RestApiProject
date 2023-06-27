@@ -1,0 +1,62 @@
+﻿@model RespApiProject2_Consumer.Models.Dtos.DTOs.VillaUpdateDTO
+
+<form asp-action="Delete">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Delete Villa</h2>
+            <hr />
+        </div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Villa Name</label>
+            <input asp-for="Name" class="form-control" disabled />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Details" class="form-label">Details</label>
+            <textarea asp-for="Details" class="form-control" disabled></textarea>
+            <span asp-validation-for="Details" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Rate" class="form-label">Rate</label>
+            <input asp-for="Rate" class="form-control" disabled />
+            <span asp-validation-for="Rate" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Occupancy" class="form-label">Occupancy</label>
+            <input asp-for="Occupancy" class="form-control" disabled />
+            <span asp-validation-for="Occupancy" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Sqft" class="form-label">Sqft</label>
+            <input asp-for="Sqft" class="form-control" disabled />
+            <span asp-validation-for="Sqft" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ImageUrl" class="form-label">Image URL</label>
+            <input asp-for="ImageUrl" class="form-control" disabled />
+            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Amenity" class="form-label">Amenity</label>
+            <textarea asp-for="Amenity" class="form-control" disabled></textarea>
+            <span asp-validation-for="Amenity" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Delete</button>
+            <a asp-controller="Villa" asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

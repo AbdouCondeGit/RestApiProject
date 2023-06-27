@@ -162,7 +162,7 @@ namespace RestApiProject1.Controllers
 
 
         }
-        [HttpDelete]
+        [HttpDelete("{id:int}", Name = "DeleteVillaValue")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

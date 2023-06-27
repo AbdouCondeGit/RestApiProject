@@ -16,6 +16,7 @@ namespace DataAccess
         }
         public DbSet<Villa> Villas { get; set; }
         public DbSet<VillaValue> VillaValues { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

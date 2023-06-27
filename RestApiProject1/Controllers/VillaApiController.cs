@@ -1,13 +1,15 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Models.DTOs;
 using RestApiProject1.Repository.IRepository;
+using Utilities;
 
 namespace RestApiProject1.Controllers
 {
-    //[Route("api/[VillaApi]")]
+    //[Route("api/VillaApi")]
     [Route("api/[controller]")]
     [ApiController]
     public class VillaApiController : ControllerBase
@@ -26,6 +28,7 @@ namespace RestApiProject1.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize()]
         public async Task<ActionResult<ApiResponse>> getMagicVillas()
         {
             ApiResponse apiResponse = new ApiResponse();
@@ -54,6 +57,7 @@ namespace RestApiProject1.Controllers
         [HttpGet("{id:int}", Name = "GetVilla")]
         [ProducesResponseType(404)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize()]
         public async Task<ActionResult<ApiResponse>> getMagicVilla(int? id)
         {
             ApiResponse apiResponse = new ApiResponse();
@@ -85,6 +89,7 @@ namespace RestApiProject1.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles =PossibleRoles.Role_Admin)]
         public async Task<ActionResult<ApiResponse>> CreateVilla([FromBody] VillaCreateDTO villa)
         {
             ApiResponse apiResponse = new ApiResponse();
@@ -126,6 +131,7 @@ namespace RestApiProject1.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = PossibleRoles.Role_Admin)]
         public async Task<ActionResult<ApiResponse>> EditVilla([FromBody] VillaUpdateDTO villaUpdateDTO)
         {
             ApiResponse apiResponse = new ApiResponse();
@@ -162,10 +168,11 @@ namespace RestApiProject1.Controllers
 
 
         }
-        [HttpDelete]
+        [HttpDelete("{id:int}", Name = "DeleteVilla")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = PossibleRoles.Role_Admin)]
         public async Task<IActionResult> DeleteVilla(int id)
         {
             ApiResponse apiResponse = new ApiResponse();
