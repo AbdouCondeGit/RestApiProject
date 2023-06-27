@@ -16,54 +16,58 @@ namespace RespApiProject2_Consumer.Service
             baseUrlService = _configuration.GetValue<String>("ServicesUrls:VillaApiService");
         }
 
-        public Task<T> CreateVillAsynca<T>(VillaCreateDTO villaCreateDTO)
+        public Task<T> CreateVillAsynca<T>(VillaCreateDTO villaCreateDTO,string token)
         {
             return SendHttpRequestAsync<T>(new ApiRequest
             {
                 baseUrl = baseUrlService + "api/VillaApi",
                 RequetPayload=villaCreateDTO,
                 apiRequestType = ApiRequestVerb.POST,
+                token = token
 
             });
         }
 
-        public Task<T> DeleteVillaAsync<T>(int id)
+        public Task<T> DeleteVillaAsync<T>(int id, string token)
         {
             return SendHttpRequestAsync<T>(new ApiRequest
             {
                 baseUrl = baseUrlService + "api/VillaApi/" + id,
                 apiRequestType = ApiRequestVerb.DELETE,
+                token = token
 
             });
         }
 
-        public Task<T> GetAllVillasAsync<T>()
+        public Task<T> GetAllVillasAsync<T>(string token)
         {
             return SendHttpRequestAsync<T>(new ApiRequest
             {
                 baseUrl = baseUrlService + "api/VillaApi",
                 apiRequestType = ApiRequestVerb.GET,
+                token = token
 
             });
         }
 
-        public Task<T> GetVillaAsync<T>(int id)
+        public Task<T> GetVillaAsync<T>(int id, string token)
         {
             return SendHttpRequestAsync<T>(new ApiRequest
             {
                 baseUrl=baseUrlService+ "api/VillaApi/"+id,
                 apiRequestType = ApiRequestVerb.GET,
-
+                token=token
             });
         }
 
-        public Task<T> UpdateVillaAsync<T>(VillaUpdateDTO villaUpdateDTO)
+        public Task<T> UpdateVillaAsync<T>(VillaUpdateDTO villaUpdateDTO, string token)
         {
             return SendHttpRequestAsync<T>(new ApiRequest
             {
                 baseUrl = baseUrlService + "api/VillaApi",
                 RequetPayload = villaUpdateDTO,
                 apiRequestType = ApiRequestVerb.PUT,
+                token = token   
 
             });
         }

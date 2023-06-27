@@ -30,7 +30,7 @@ namespace RespApiProject2_Consumer.Controllers
         public async Task<ActionResult<ApiResponse>> Index()
         {
             //List<VillaDTO> villas = new();
-            ApiResponse response = _villaService.GetAllVillasAsync<ApiResponse>().GetAwaiter().GetResult(); 
+            ApiResponse response = _villaService.GetAllVillasAsync<ApiResponse>(HttpContext.Session.GetString(SD.token)).GetAwaiter().GetResult(); 
             if (response!=null && response.IsSuccess)
             {
                // villas = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(response.result));
@@ -53,7 +53,7 @@ namespace RespApiProject2_Consumer.Controllers
         //List<VillaDTO> villas = new();
         if(ModelState.IsValid)
             {
-                ApiResponse response = _villaService.CreateVillAsynca<ApiResponse>(villaCreateDTO).GetAwaiter().GetResult();
+                ApiResponse response = _villaService.CreateVillAsynca<ApiResponse>(villaCreateDTO,HttpContext.Session.GetString(SD.token)).GetAwaiter().GetResult();
                 if (response != null && response.IsSuccess)
                 {
                     // villas = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(response.result));
@@ -83,7 +83,7 @@ namespace RespApiProject2_Consumer.Controllers
         [Authorize(Roles = PossibleRoles.Role_Admin)]
         public async Task<IActionResult> Edit(int id)
 		{
-            ApiResponse apiResponse=_villaService.GetVillaAsync<ApiResponse>(id).GetAwaiter().GetResult();
+            ApiResponse apiResponse=_villaService.GetVillaAsync<ApiResponse>(id, HttpContext.Session.GetString(SD.token)).GetAwaiter().GetResult();
             if(apiResponse!=null && apiResponse.IsSuccess)
             {
                 VillaDTO model = JsonConvert.DeserializeObject<VillaDTO>(Convert.ToString(apiResponse.result));
@@ -101,7 +101,7 @@ namespace RespApiProject2_Consumer.Controllers
 			//List<VillaDTO> villas = new();
 			if (ModelState.IsValid)
 			{
-				ApiResponse response = _villaService.UpdateVillaAsync<ApiResponse>(villaUpdateDTO).GetAwaiter().GetResult();
+				ApiResponse response = _villaService.UpdateVillaAsync<ApiResponse>(villaUpdateDTO, HttpContext.Session.GetString(SD.token)).GetAwaiter().GetResult();
 				if (response != null && response.IsSuccess)
 				{
 					// villas = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(response.result));
@@ -176,7 +176,7 @@ namespace RespApiProject2_Consumer.Controllers
 
         public async Task<ActionResult<IEnumerable<VillaValueDTO>>> getVillasList()
         {
-            ApiResponse response = _villaService.GetAllVillasAsync<ApiResponse>().GetAwaiter().GetResult();
+            ApiResponse response = _villaService.GetAllVillasAsync<ApiResponse>(HttpContext.Session.GetString(SD.token)).GetAwaiter().GetResult();
             if (response != null && response.IsSuccess)
             {
                 // villas = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(response.result));
@@ -195,10 +195,10 @@ namespace RespApiProject2_Consumer.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteVilla(int id)
         {
-            ApiResponse apiResponse = _villaService.GetVillaAsync<ApiResponse>(id).GetAwaiter().GetResult();
+            ApiResponse apiResponse = _villaService.GetVillaAsync<ApiResponse>(id, HttpContext.Session.GetString(SD.token)).GetAwaiter().GetResult();
             if (apiResponse != null && apiResponse.IsSuccess)
             {
-                ApiResponse response = _villaService.DeleteVillaAsync<ApiResponse>(id).GetAwaiter().GetResult();
+                ApiResponse response = _villaService.DeleteVillaAsync<ApiResponse>(id, HttpContext.Session.GetString(SD.token)).GetAwaiter().GetResult();
                 return Json(new { success = true, message = "Delete Successful" });
             }
             return Json(new { success = false, message = "Error while deleting" });
