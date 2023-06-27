@@ -27,6 +27,7 @@ namespace Utilities
             CreateMap<VillaValueDTO, VillaValueCreateDTO>().ReverseMap();
             CreateMap<VillaValueDTO, VillaValueUpdateDTO>().ReverseMap();
 
+            CreateMap<RegisterRequestDTO, ApplicationUser>().ReverseMap();
         }
         
 

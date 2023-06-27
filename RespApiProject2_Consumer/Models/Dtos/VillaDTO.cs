@@ -16,6 +16,7 @@ namespace RespApiProject2_Consumer.Models.Dtos
         public string ImageUrl { get; set; }
         public string Amenity { get; set; }
 
+        
 
     }
 }

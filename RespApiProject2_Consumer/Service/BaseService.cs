@@ -24,7 +24,9 @@ namespace RespApiProject2_Consumer.Service
                 HttpClient client = _httpClientFactory.CreateClient();
                 HttpRequestMessage message = new HttpRequestMessage();
                 message.RequestUri = new Uri(apiRequest.baseUrl);
-                message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.RequetPayload), Encoding.UTF8, "application/json");
+                if(apiRequest.RequetPayload != null) { 
+                    message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.RequetPayload), Encoding.UTF8, "application/json");
+                }
                 switch (apiRequest.apiRequestType)
                 {
                     case ApiRequestVerb.GET:

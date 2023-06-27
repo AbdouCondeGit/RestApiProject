@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "Create";
+}
+
+@model VillaCreateDTO
+
+<form method="post">
+    <div class="container p-3">
+        <div class="border-bottom-0 p-3 mt-4">
+            <div class="row pb-2">
+                <h2 class="text-primary">Create Villa</h2>
+                <hr />
+            </div>
+            <div asp-validation-summary="All"></div>
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Name</label>
+                <input asp-for="Name" class="form-control" >
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Details" class="form-label">Details</label>
+                <textarea asp-for="Details" class="form-control"></textarea>
+                <span asp-validation-for="Details" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Rate" class="form-label">Rate</label>
+                <input asp-for="Rate" class="form-control" >
+                <span asp-validation-for="Rate" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Occupancy" class="form-label">Occupancy</label>
+                <input asp-for="Occupancy" class="form-control" >
+                <span asp-validation-for="Occupancy" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Sqft" class="form-label">Sqft</label>
+                <input asp-for="Sqft" class="form-control" >
+                <span asp-validation-for="Sqft" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ImageUrl" class="form-label">Image URL</label>
+                <input asp-for="ImageUrl" class="form-control">
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Amenity" class="form-label">Amenity</label>
+                <input asp-for="Amenity" class="form-control">
+                <span asp-validation-for="Amenity" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Create Villa
+                </button>
+                <a asp-controller="Villa" asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

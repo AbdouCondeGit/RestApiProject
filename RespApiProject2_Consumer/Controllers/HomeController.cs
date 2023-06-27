@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RespApiProject2_Consumer.Models;
+using RespApiProject2_Consumer.Models.Dtos;
+using RespApiProject2_Consumer.Service;
+using RespApiProject2_Consumer.Service.IService;
 using System.Diagnostics;
 
 namespace RespApiProject2_Consumer.Controllers
@@ -7,15 +11,26 @@ namespace RespApiProject2_Consumer.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IVillaService _villaService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,IVillaService villaService)
         {
             _logger = logger;
+            _villaService = villaService;
         }
 
-        public IActionResult Index()
+        public async Task<ActionResult<ApiResponse>> Index()
         {
+            //List<VillaDTO> villas = new();
+            ApiResponse response = _villaService.GetAllVillasAsync<ApiResponse>().GetAwaiter().GetResult();
+            if (response != null && response.IsSuccess)
+            {
+                // villas = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(response.result));
+                response.result = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(response.result));
+                return View(response.result);
+            }
             return View();
+
         }
 
         public IActionResult Privacy()

@@ -10,11 +10,18 @@ namespace RestApiProject1.Repository
 
         public IVillaRepository<Villa> villaRepository { get; set; }
         public IVillaValueRepository<VillaValue> villaValueRepository { get; set; }
-        public UnitOfWork(ApplicationDbContext db)
+
+        public IUserRepository<ApplicationUser> userRepository { get; set; }
+        IConfiguration _configuration;
+
+        public UnitOfWork(ApplicationDbContext db, IConfiguration configuration)
         {
-            villaRepository=new VillaRepository(db);
-            villaValueRepository=new VillaValueRepository(db);
             this._db = db;
+            _configuration = configuration;
+            villaRepository =new VillaRepository(db);
+            villaValueRepository=new VillaValueRepository(db);
+            userRepository =new UserRepository(db,configuration);
+           
         }
 
         public async Task CommitAsync()

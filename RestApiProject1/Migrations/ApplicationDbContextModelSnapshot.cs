@@ -22,6 +22,31 @@ namespace RestApiProject1.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Models.ApplicationUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicationUsers");
+                });
+
             modelBuilder.Entity("Models.Villa", b =>
                 {
                     b.Property<int>("Id")
@@ -31,7 +56,6 @@ namespace RestApiProject1.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Amenity")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedBy")
@@ -41,15 +65,12 @@ namespace RestApiProject1.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Details")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Occupancy")
@@ -74,70 +95,70 @@ namespace RestApiProject1.Migrations
                             Id = 1,
                             Amenity = "",
                             CreatedBy = "Abdou",
-                            CreatedDate = new DateTime(2023, 5, 24, 22, 39, 44, 915, DateTimeKind.Local).AddTicks(2580),
+                            CreatedDate = new DateTime(2023, 6, 25, 12, 30, 11, 560, DateTimeKind.Local).AddTicks(8867),
                             Details = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa3.jpg",
                             Name = "Royal Villa",
                             Occupancy = 4,
                             Rate = 200.0,
                             Sqft = 550,
-                            UpdateDate = new DateTime(2023, 5, 24, 22, 39, 44, 915, DateTimeKind.Local).AddTicks(2583)
+                            UpdateDate = new DateTime(2023, 6, 25, 12, 30, 11, 560, DateTimeKind.Local).AddTicks(8870)
                         },
                         new
                         {
                             Id = 2,
                             Amenity = "",
                             CreatedBy = "Abdou",
-                            CreatedDate = new DateTime(2023, 5, 24, 22, 39, 44, 915, DateTimeKind.Local).AddTicks(2590),
+                            CreatedDate = new DateTime(2023, 6, 25, 12, 30, 11, 560, DateTimeKind.Local).AddTicks(8874),
                             Details = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa1.jpg",
                             Name = "Premium Pool Villa",
                             Occupancy = 4,
                             Rate = 300.0,
                             Sqft = 550,
-                            UpdateDate = new DateTime(2023, 5, 24, 22, 39, 44, 915, DateTimeKind.Local).AddTicks(2592)
+                            UpdateDate = new DateTime(2023, 6, 25, 12, 30, 11, 560, DateTimeKind.Local).AddTicks(8875)
                         },
                         new
                         {
                             Id = 3,
                             Amenity = "",
                             CreatedBy = "Abdou",
-                            CreatedDate = new DateTime(2023, 5, 24, 22, 39, 44, 915, DateTimeKind.Local).AddTicks(2599),
+                            CreatedDate = new DateTime(2023, 6, 25, 12, 30, 11, 560, DateTimeKind.Local).AddTicks(8878),
                             Details = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa4.jpg",
                             Name = "Luxury Pool Villa",
                             Occupancy = 4,
                             Rate = 400.0,
                             Sqft = 750,
-                            UpdateDate = new DateTime(2023, 5, 24, 22, 39, 44, 915, DateTimeKind.Local).AddTicks(2601)
+                            UpdateDate = new DateTime(2023, 6, 25, 12, 30, 11, 560, DateTimeKind.Local).AddTicks(8879)
                         },
                         new
                         {
                             Id = 4,
                             Amenity = "",
                             CreatedBy = "Abdou",
-                            CreatedDate = new DateTime(2023, 5, 24, 22, 39, 44, 915, DateTimeKind.Local).AddTicks(2606),
+                            CreatedDate = new DateTime(2023, 6, 25, 12, 30, 11, 560, DateTimeKind.Local).AddTicks(8882),
                             Details = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa5.jpg",
                             Name = "Diamond Villa",
                             Occupancy = 4,
                             Rate = 550.0,
                             Sqft = 900,
-                            UpdateDate = new DateTime(2023, 5, 24, 22, 39, 44, 915, DateTimeKind.Local).AddTicks(2609)
+                            UpdateDate = new DateTime(2023, 6, 25, 12, 30, 11, 560, DateTimeKind.Local).AddTicks(8884)
                         },
                         new
                         {
                             Id = 5,
                             Amenity = "",
                             CreatedBy = "Abdou",
-                            CreatedDate = new DateTime(2023, 5, 24, 22, 39, 44, 915, DateTimeKind.Local).AddTicks(2614),
+                            CreatedDate = new DateTime(2023, 6, 25, 12, 30, 11, 560, DateTimeKind.Local).AddTicks(8887),
                             Details = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa2.jpg",
                             Name = "Diamond Pool Villa",
                             Occupancy = 4,
                             Rate = 600.0,
                             Sqft = 1100,
-                            UpdateDate = new DateTime(2023, 5, 24, 22, 39, 44, 915, DateTimeKind.Local).AddTicks(2616)
+                            UpdateDate = new DateTime(2023, 6, 25, 12, 30, 11, 560, DateTimeKind.Local).AddTicks(8888)
                         });
                 });
 
@@ -150,7 +171,6 @@ namespace RestApiProject1.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SpecialDetails")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")

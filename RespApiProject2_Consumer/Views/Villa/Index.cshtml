@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Villas Page";
+}
+@using Utilities;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpAcc
+@model IEnumerable<VillaDTO>
+<div class="container p-3">
+    <section>
+        @if (httpAcc.HttpContext.Session.GetString(SD.token) == null ||
+        httpAcc.HttpContext.Session.GetString(SD.token).ToString().Length == 0)
+        {
+                <h2 class="display-4 text-center text-danger">You must login to see the villas list</h2>
+           
+        }
+        <div class="row pt-4">
+            <div class="col-6">
+                <h2 class="display-4">Villas List</h2>
+            </div>
+            <div class="col-6 text-end">
+                <a asp-controller="Villa" asp-action="Create" class="btn btn-primary">
+                    <i class="bi bi-database-add"></i> Create New Villa 
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <br /><br />
+
+    <table class="table table-bordered table-striped" id="myTable" style="width:100%">
+        <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Rate</th>
+                <th>Occupancy</th>
+                <th>Sqft</th>
+                <th>Amenity</th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+@section Scripts{
+    <script src="~/js/villa.js"></script>
+
+}
