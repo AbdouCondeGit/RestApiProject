@@ -1,6 +1,8 @@
 using DataAccess;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RestApiProject1.Repository;
@@ -17,6 +19,20 @@ builder.Services.AddControllers();
 builder.Services.Configure<TokenSecretKey>(builder.Configuration.GetSection("TokenAuth"));
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("RestApiProject1")));
 builder.Services.AddAutoMapper(typeof(Mappings));
+builder.Services.AddApiVersioning(options =>
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.ReportApiVersions = true;
+});
+
+builder.Services.AddVersionedApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    //options.SubstituteApiVersionInUrl = true;
+});
+
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var key = builder.Configuration.GetValue<string>("TokenAuth:Tokenkey");
@@ -66,40 +82,40 @@ builder.Services.AddSwaggerGen(options => {
             new List<string>()
         }
     });
-    //options.SwaggerDoc("v1", new OpenApiInfo
-    //{
-    //    Version = "v1.0",
-    //    Title = "Magic Villa V1",
-    //    Description = "API to manage Villa",
-    //    TermsOfService = new Uri("https://www.udemy.com/"),
-    //    Contact = new OpenApiContact
-    //    {
-    //        Name = "Dotnetmastery",
-    //        Url = new Uri("https://www.udemy.com/")
-    //    },
-    //    License = new OpenApiLicense
-    //    {
-    //        Name = "Example License",
-    //        Url = new Uri("https://www.udemy.com/")
-    //    }
-    //});
-    //options.SwaggerDoc("v2", new OpenApiInfo
-    //{
-    //    Version = "v2.0",
-    //    Title = "Magic Villa V2",
-    //    Description = "API to manage Villa",
-    //    TermsOfService = new Uri("https://www.udemy.com/"),
-    //    Contact = new OpenApiContact
-    //    {
-    //        Name = "Dotnetmastery",
-    //        Url = new Uri("https://www.udemy.com/")
-    //    },
-    //    License = new OpenApiLicense
-    //    {
-    //        Name = "Example License",
-    //        Url = new Uri("https://example.com/license")
-    //    }
-    //});
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1.0",
+        Title = "Oh my Villas V1",
+        Description = "API to manage Villa",
+        TermsOfService = new Uri("https://www.udemy.com/"),
+        Contact = new OpenApiContact
+        {
+            Name = "AbdouConde",
+            Url = new Uri("https://www.udemy.com/")
+        },
+        License = new OpenApiLicense
+        {
+            Name = "AbdouConde",
+            Url = new Uri("https://www.udemy.com/")
+        }
+    });
+    options.SwaggerDoc("v2", new OpenApiInfo
+    {
+        Version = "v2.0",
+        Title = "Oh my Villas V2",
+        Description = "API to manage Villa",
+        TermsOfService = new Uri("https://www.udemy.com/"),
+        Contact = new OpenApiContact
+        {
+            Name = "AbdouConde",
+            Url = new Uri("https://www.udemy.com/")
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Example License",
+            Url = new Uri("https://example.com/license")
+        }
+    });
 });
 var app = builder.Build();
 
@@ -107,7 +123,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options => {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Oh my villa v1");
+        options.SwaggerEndpoint("/swagger/v2/swagger.json", "Oh my villa v2");
+    });
 }
 
 app.UseHttpsRedirection();

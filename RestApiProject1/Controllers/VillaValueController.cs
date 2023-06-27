@@ -4,12 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 using Models;
 using Models.DTOs;
 using RestApiProject1.Repository.IRepository;
-
+using System.Data;
 namespace RestApiProject1.Controllers
 {
      //[Route("api/[VillaValue]")]
-      [Route("api/[controller]")]
+      [Route("api/v{version:apiVersion}/[controller]/[action]")]
+      //[Route("api/[controller]")]
      [ApiController]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     public class VillaValueController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -26,7 +29,7 @@ namespace RestApiProject1.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ApiResponse>> getVillaNumbers()
+        public async Task<ActionResult<ApiResponse>> getVillaValues()
         {
             ApiResponse apiResponse = new ApiResponse();
             try
@@ -51,10 +54,21 @@ namespace RestApiProject1.Controllers
 
         }
 
+        [HttpGet]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [MapToApiVersion("2.0")]
+        public async Task<ActionResult<Object>> getVillaValues_2()
+        {
+            return new { success = true,failure=false };
+
+        }
+
         [HttpGet("{id:int}", Name = "GetVillaValue")]
         [ProducesResponseType(404)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<ApiResponse>> getVillaNumber(int? id)
+        public async Task<ActionResult<ApiResponse>> getVillaValue(int? id)
         {
             ApiResponse apiResponse = new ApiResponse();
             try
