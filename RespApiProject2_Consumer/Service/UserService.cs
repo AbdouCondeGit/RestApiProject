@@ -20,7 +20,7 @@ namespace RespApiProject2_Consumer.Service
         {
             return SendHttpRequestAsync<T>(new ApiRequest
             {
-                baseUrl = baseUrlService + "api/UserApi/Login",
+                baseUrl = baseUrlService + "api/v1/UserApi/Login",
                 RequetPayload= loginRequestDTO,
                 apiRequestType = ApiRequestVerb.POST,
 
@@ -30,7 +30,7 @@ namespace RespApiProject2_Consumer.Service
         {
             return SendHttpRequestAsync<T>(new ApiRequest
             {
-                baseUrl = baseUrlService + "api/UserApi/Register",
+                baseUrl = baseUrlService + "api/v1/UserApi/Register",
                 RequetPayload = registerRequestDTO,
                 apiRequestType = ApiRequestVerb.POST,
 

@@ -10,8 +10,9 @@ using System.Net;
 namespace RestApiProject1.Controllers
 {
     //[Route("api/UserApi")]
-    [Route("api/[controller]/[action]")]
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
     [ApiController]
+    [ApiVersionNeutral]
     public class UserApiController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -20,8 +21,8 @@ namespace RestApiProject1.Controllers
 
         public UserApiController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            this._unitOfWork = unitOfWork;
-            this._mapper = mapper;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
             //this._logger = logger;
         }
 
@@ -36,14 +37,14 @@ namespace RestApiProject1.Controllers
             ApiResponse apiResponse = new ApiResponse();
             if (_unitOfWork.userRepository.IsUnique(registerRequestDTO.Email) == false)
             {
-                apiResponse.statusCode = System.Net.HttpStatusCode.Forbidden;
+                apiResponse.statusCode = HttpStatusCode.Forbidden;
                 apiResponse.ErrorMessage = new List<string> { "This email is already associated to a user in our database" };
                 apiResponse.IsSuccess = false;
                 apiResponse.result = null;
                 return BadRequest(apiResponse);
             }
             apiResponse.result = _unitOfWork.userRepository.Register(_mapper.Map<ApplicationUser>(registerRequestDTO)).GetAwaiter().GetResult();
-            if(apiResponse.result == null)
+            if (apiResponse.result == null)
             {
                 apiResponse.statusCode = HttpStatusCode.BadRequest;
                 apiResponse.IsSuccess = false;
@@ -51,9 +52,9 @@ namespace RestApiProject1.Controllers
                 return BadRequest(apiResponse);
             }
             _unitOfWork.CommitAsync().GetAwaiter().GetResult();
-            apiResponse.statusCode=System.Net.HttpStatusCode.OK;
+            apiResponse.statusCode = HttpStatusCode.OK;
             apiResponse.IsSuccess = true;
-            return Ok(apiResponse);     
+            return Ok(apiResponse);
         }
         //[HttpPost(Name = "Login")]
         [HttpPost]
@@ -62,19 +63,19 @@ namespace RestApiProject1.Controllers
         public async Task<ActionResult<ApiResponse>> Login([FromBody] LoginRequestDTO loginRequestDTO)
         {
             ApiResponse apiResponse = new ApiResponse();
-            LoginResponseDTO loginResponseDTO=_unitOfWork.userRepository.Login(loginRequestDTO).GetAwaiter().GetResult();
-            if(loginResponseDTO == null ||loginResponseDTO.applicationUser==null ||loginResponseDTO.token==null)
+            LoginResponseDTO loginResponseDTO = _unitOfWork.userRepository.Login(loginRequestDTO).GetAwaiter().GetResult();
+            if (loginResponseDTO == null || loginResponseDTO.applicationUser == null || loginResponseDTO.token == null)
             {
-                apiResponse.statusCode = System.Net.HttpStatusCode.NetworkAuthenticationRequired;
+                apiResponse.statusCode = HttpStatusCode.NetworkAuthenticationRequired;
                 apiResponse.ErrorMessage = new List<string> { "Your credentials are not correct" };
                 apiResponse.IsSuccess = false;
                 apiResponse.result = null;
                 return BadRequest(apiResponse);
             }
-            apiResponse.result=loginResponseDTO;
-            apiResponse.statusCode = System.Net.HttpStatusCode.OK;
+            apiResponse.result = loginResponseDTO;
+            apiResponse.statusCode = HttpStatusCode.OK;
             apiResponse.IsSuccess = true;
-            return  Ok(apiResponse);
+            return Ok(apiResponse);
 
         }
 

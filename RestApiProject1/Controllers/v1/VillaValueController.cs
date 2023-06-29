@@ -5,13 +5,13 @@ using Models;
 using Models.DTOs;
 using RestApiProject1.Repository.IRepository;
 using System.Data;
-namespace RestApiProject1.Controllers
+namespace RestApiProject1.Controllers.v1
 {
-     //[Route("api/[VillaValue]")]
-      [Route("api/v{version:apiVersion}/[controller]/[action]")]
-      //[Route("api/[controller]")]
-     [ApiController]
-    [ApiVersion("1.0")]
+    //[Route("api/[VillaValue]")]
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
+    //[Route("api/[controller]")]
+    [ApiController]
+    [ApiVersion("1.0",Deprecated =true)]
     [ApiVersion("2.0")]
     public class VillaValueController : ControllerBase
     {
@@ -21,27 +21,28 @@ namespace RestApiProject1.Controllers
 
         public VillaValueController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            this._unitOfWork = unitOfWork;
-            this._mapper = mapper;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
             //this._logger = logger;
         }
         [HttpGet]
         [ProducesResponseType(404)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet]
         public async Task<ActionResult<ApiResponse>> getVillaValues()
         {
             ApiResponse apiResponse = new ApiResponse();
             try
             {
-                var villas = await _unitOfWork.villaValueRepository.GetAllAsync("Villa");
+                var villas = await _unitOfWork.villaValueRepository.GetAllAsync(1,1,"Villa");
                 if (villas == null)
                 {
                     return NotFound();
                 }
                 apiResponse.IsSuccess = true;
                 apiResponse.statusCode = System.Net.HttpStatusCode.OK;
-                apiResponse.result = (_mapper.Map<List<VillaValueDTO>>(villas));
+                apiResponse.result = _mapper.Map<List<VillaValueDTO>>(villas);
                 apiResponse.ErrorMessage = null;
                 return Ok(apiResponse);
             }
@@ -54,14 +55,14 @@ namespace RestApiProject1.Controllers
 
         }
 
-        [HttpGet]
+        [HttpGet("getValuesv2")]
         [ProducesResponseType(404)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [MapToApiVersion("2.0")]
-        public async Task<ActionResult<Object>> getVillaValues_2()
+        public async Task<ActionResult<object>> getVillaValues_2()
         {
-            return new { success = true,failure=false };
+            return new { success = true, failure = false };
 
         }
 
@@ -73,7 +74,7 @@ namespace RestApiProject1.Controllers
             ApiResponse apiResponse = new ApiResponse();
             try
             {
-                var villa = await _unitOfWork.villaValueRepository.getAsync(u => u.VillaNo == id,false,"Villa");
+                var villa = await _unitOfWork.villaValueRepository.getAsync(u => u.VillaNo == id, false, "Villa");
                 if (villa == null)
                 {
                     apiResponse.statusCode = System.Net.HttpStatusCode.NotFound;
@@ -82,7 +83,7 @@ namespace RestApiProject1.Controllers
                 }
                 apiResponse.IsSuccess = true;
                 apiResponse.statusCode = System.Net.HttpStatusCode.OK;
-                apiResponse.result = (_mapper.Map<VillaValueDTO>(villa));
+                apiResponse.result = _mapper.Map<VillaValueDTO>(villa);
                 apiResponse.ErrorMessage = null;
                 return Ok(apiResponse);
             }
@@ -99,15 +100,18 @@ namespace RestApiProject1.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        //[ResponseCache(Duration=30)]
+        [ResponseCache(CacheProfileName = "Default30")]
         public async Task<ActionResult<ApiResponse>> CreateVillaValue([FromBody] VillaValueCreateDTO villaValue)
         {
             ApiResponse apiResponse = new ApiResponse();
             try
             {
-                if (villaValue == null)
+                if (villaValue == null || villaValue.SpecialDetails==null)
                 {
                     apiResponse.statusCode = System.Net.HttpStatusCode.NotFound;
                     apiResponse.IsSuccess = false;
+                    apiResponse.ErrorMessage = new List<string> {  "Yous muster enter at least three details separated by commas" };
                     return BadRequest(apiResponse);
                 }
                 if (villaValue.SpecialDetails.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Length < 3)

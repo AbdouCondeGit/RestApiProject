@@ -10,9 +10,9 @@ function loadDataTable() {
         },
         "columns": [
             { data: 'name', "width": "25%" },
-            { data: 'rate', "width": "15%" },
+            { data: 'rate', "width": "10%" },
             { data: 'occupancy', "width": "15%" },
-            { data: 'sqft', "width": "15%" },
+            { data: 'sqft', "width": "10%" },
             { data: 'amenity', "width": "15%" },
             {
                 data: 'id',

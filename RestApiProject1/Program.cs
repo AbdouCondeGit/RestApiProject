@@ -14,7 +14,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(option =>
+{
+    option.CacheProfiles.Add("Default30",
+       new CacheProfile()
+       {
+           Duration = 30,
+           Location = ResponseCacheLocation.Any
+       });
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.Configure<TokenSecretKey>(builder.Configuration.GetSection("TokenAuth"));
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("RestApiProject1")));
@@ -29,13 +38,14 @@ builder.Services.AddApiVersioning(options =>
 builder.Services.AddVersionedApiExplorer(options =>
 {
     options.GroupNameFormat = "'v'VVV";
-    //options.SubstituteApiVersionInUrl = true;
+    options.SubstituteApiVersionInUrl = true;
 });
 
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-var key = builder.Configuration.GetValue<string>("TokenAuth:Tokenkey");
+var key = builder.Configuration.GetValue<string>("ConnectionStrings:Tokenkey");
+
 
 builder.Services.AddAuthentication(x =>
 {
@@ -120,12 +130,14 @@ builder.Services.AddSwaggerGen(options => {
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(options => {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "Oh my villa v1");
         options.SwaggerEndpoint("/swagger/v2/swagger.json", "Oh my villa v2");
+        options.RoutePrefix=String.Empty;
     });
 }
 

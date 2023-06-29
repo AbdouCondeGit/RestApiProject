@@ -67,6 +67,7 @@ namespace RespApiProject2_Consumer.Controllers
                     for(int i = 0; i < response.ErrorMessage.Count; i++)
                     {
 						ModelState.AddModelError(response.ErrorMessage.ToString(), response.ErrorMessage[i]);
+                        ModelState.AddModelError("Client side error", "Please make sure that that value you put for Villa Number does not already exist and the value for VillaId exists (see in villas list)");
 					}
                     return View(villaValueCreateDTO);
                 }
