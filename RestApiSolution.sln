@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities", "Utilities\Utilities.csproj", "{0682B6F9-0C4F-4BAD-8F62-FC218A4229BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RespApiProject2_Consumer", "RespApiProject2_Consumer\RespApiProject2_Consumer.csproj", "{91478294-3EFE-47E1-9D09-9F31D5D3B589}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RespApiProject2_Consumer", "RespApiProject2_Consumer\RespApiProject2_Consumer.csproj", "{91478294-3EFE-47E1-9D09-9F31D5D3B589}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

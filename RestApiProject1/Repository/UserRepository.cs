@@ -24,7 +24,7 @@ namespace RestApiProject1.Repository
         {
             this._db = db;
             _tokenSecretKey = new TokenSecretKey();
-            secretKey= configuration.GetValue<string>("TokenAuth:Tokenkey");
+            secretKey= configuration.GetValue<string>("ConnectionStrings:Tokenkey");
 
         }
 

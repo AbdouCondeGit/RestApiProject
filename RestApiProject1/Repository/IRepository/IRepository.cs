@@ -6,7 +6,7 @@ namespace RestApiProject1.Repository.IRepository
     {
         public Task CreateAsync(T item);
         public Task<T> getAsync(Expression<Func<T,bool>> filter=null, bool tracked=true,string? includeNaviProperties=null);
-        public Task<List<T>> GetAllAsync(string? includeNaviProperties = null);
+        public Task<List<T>> GetAllAsync(int pageSize, int pageNumber, string? includeNaviProperties = null);
 
         public Task RemoveAsync(T item);
         public Task RemoveRangeAsync(IEnumerable<T> items);

@@ -20,7 +20,7 @@ namespace RespApiProject2_Consumer.Service
         {
             return SendHttpRequestAsync<T>(new ApiRequest
             {
-                baseUrl = baseUrlService + "api/VillaApi",
+                baseUrl = baseUrlService + "api/v1/VillaApi",
                 RequetPayload=villaCreateDTO,
                 apiRequestType = ApiRequestVerb.POST,
                 token = token
@@ -32,7 +32,7 @@ namespace RespApiProject2_Consumer.Service
         {
             return SendHttpRequestAsync<T>(new ApiRequest
             {
-                baseUrl = baseUrlService + "api/VillaApi/" + id,
+                baseUrl = baseUrlService + "api/v1/VillaApi/" + id,
                 apiRequestType = ApiRequestVerb.DELETE,
                 token = token
 
@@ -43,7 +43,7 @@ namespace RespApiProject2_Consumer.Service
         {
             return SendHttpRequestAsync<T>(new ApiRequest
             {
-                baseUrl = baseUrlService + "api/VillaApi",
+                baseUrl = baseUrlService + "api/v1/VillaApi",
                 apiRequestType = ApiRequestVerb.GET,
                 token = token
 
@@ -54,7 +54,7 @@ namespace RespApiProject2_Consumer.Service
         {
             return SendHttpRequestAsync<T>(new ApiRequest
             {
-                baseUrl=baseUrlService+ "api/VillaApi/"+id,
+                baseUrl=baseUrlService+ "api/v1/VillaApi/" + id,
                 apiRequestType = ApiRequestVerb.GET,
                 token=token
             });
@@ -64,7 +64,7 @@ namespace RespApiProject2_Consumer.Service
         {
             return SendHttpRequestAsync<T>(new ApiRequest
             {
-                baseUrl = baseUrlService + "api/VillaApi",
+                baseUrl = baseUrlService + "api/v1/VillaApi",
                 RequetPayload = villaUpdateDTO,
                 apiRequestType = ApiRequestVerb.PUT,
                 token = token   

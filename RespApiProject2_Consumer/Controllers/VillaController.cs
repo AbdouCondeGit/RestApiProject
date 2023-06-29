@@ -27,7 +27,7 @@ namespace RespApiProject2_Consumer.Controllers
             _mapper = mapper;
         }
 
-        public async Task<ActionResult<ApiResponse>> Index()
+        public async Task<IActionResult> Index()
         {
             //List<VillaDTO> villas = new();
             ApiResponse response = _villaService.GetAllVillasAsync<ApiResponse>(HttpContext.Session.GetString(SD.token)).GetAwaiter().GetResult(); 
@@ -48,12 +48,13 @@ namespace RespApiProject2_Consumer.Controllers
         }
 
     [HttpPost]
-    public async Task<ActionResult<ApiResponse>> Create(VillaCreateDTO villaCreateDTO)
+    public async Task<IActionResult> Create(VillaCreateDTO villaCreateDTO)
     {
         //List<VillaDTO> villas = new();
         if(ModelState.IsValid)
             {
-                ApiResponse response = _villaService.CreateVillAsynca<ApiResponse>(villaCreateDTO,HttpContext.Session.GetString(SD.token)).GetAwaiter().GetResult();
+                ApiResponse response=new ApiResponse();
+                 response = _villaService.CreateVillAsynca<ApiResponse>(villaCreateDTO,HttpContext.Session.GetString(SD.token)).GetAwaiter().GetResult();
                 if (response != null && response.IsSuccess)
                 {
                     // villas = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(response.result));
@@ -63,16 +64,16 @@ namespace RespApiProject2_Consumer.Controllers
                     return RedirectToAction(nameof(Index));
 
                 }
-                else
-                {
-                    response.statusCode=System.Net.HttpStatusCode.BadRequest;
-                    response.IsSuccess = false;
-                    for(int i = 0; i < response.ErrorMessage.Count; i++)
-                    {
-						ModelState.AddModelError(response.ErrorMessage.ToString(), response.ErrorMessage[i]);
-					}
+
+                //               response.statusCode=System.Net.HttpStatusCode.BadRequest;
+                //               response.IsSuccess = false;
+                //               for(int i = 0; i < response.ErrorMessage.Count; i++)
+                //               {
+                //	ModelState.AddModelError(response.ErrorMessage.ToString(), response.ErrorMessage[i]);
+                //}
+                ModelState.AddModelError("custom", "You must login as admin to create a villa");
                     return View(villaCreateDTO);
-                }
+                
                
             }
             else { 

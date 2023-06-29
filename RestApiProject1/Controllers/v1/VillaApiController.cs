@@ -7,12 +7,13 @@ using Models.DTOs;
 using RestApiProject1.Repository.IRepository;
 using Utilities;
 
-namespace RestApiProject1.Controllers
+namespace RestApiProject1.Controllers.v1
 {
     //[Route("api/VillaApi")]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
-    [ApiVersion("1.0")] 
+    [ApiVersion("1.0")]
+
     public class VillaApiController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -21,8 +22,8 @@ namespace RestApiProject1.Controllers
 
         public VillaApiController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            this._unitOfWork = unitOfWork;
-            this._mapper = mapper;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
             //this._logger = logger;
         }
         [HttpGet]
@@ -30,19 +31,41 @@ namespace RestApiProject1.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize()]
-        public async Task<ActionResult<ApiResponse>> getMagicVillas()
+        // [ResponseCache(Duration = 30,Location =ResponseCacheLocation.Any)]
+        //[ResponseCache(Duration=30)]
+        [ResponseCache(CacheProfileName = "Default30")]
+        public async Task<ActionResult<ApiResponse>> getMagicVillas([FromQuery(Name = "filter occupancy")] int? occupancy, [FromQuery] string? searchparameter, int pageSize , int pageNumber )
         {
             ApiResponse apiResponse = new ApiResponse();
             try
             {
-                var villas = await _unitOfWork.villaRepository.GetAllAsync();
-                if (villas == null)
+                IEnumerable<Villa> villas;
+                if (occupancy > 0)
                 {
-                    return NotFound();
+                    villas= _unitOfWork.villaRepository.GetAllAsync(pageSize,pageNumber).GetAwaiter().GetResult().Where(u => u.Occupancy == occupancy);
+                    if (villas == null)
+                    {
+                        return NotFound();
+                    }
                 }
+                else
+                {
+                        villas = await _unitOfWork.villaRepository.GetAllAsync(pageSize,pageNumber);
+                        if (villas == null)
+                        {
+                            return NotFound();
+                        }
+                    }
+                if (!String.IsNullOrEmpty(searchparameter))
+                {
+                    villas = villas.Where(u => u.Name.ToLower().Contains(searchparameter));
+                }
+               
+               
+                
                 apiResponse.IsSuccess = true;
                 apiResponse.statusCode = System.Net.HttpStatusCode.OK;
-                apiResponse.result = (_mapper.Map<List<VillaDTO>>(villas));
+                apiResponse.result = _mapper.Map<List<VillaDTO>>(villas);
                 apiResponse.ErrorMessage = null;
                 return Ok(apiResponse);
             }
@@ -65,6 +88,7 @@ namespace RestApiProject1.Controllers
             try
             {
                 var villa = await _unitOfWork.villaRepository.getAsync(u => u.Id == id);
+
                 if (villa == null)
                 {
                     apiResponse.statusCode = System.Net.HttpStatusCode.NotFound;
@@ -73,7 +97,7 @@ namespace RestApiProject1.Controllers
                 }
                 apiResponse.IsSuccess = true;
                 apiResponse.statusCode = System.Net.HttpStatusCode.OK;
-                apiResponse.result = (_mapper.Map<VillaDTO>(villa));
+                apiResponse.result = _mapper.Map<VillaDTO>(villa);
                 apiResponse.ErrorMessage = null;
                 return Ok(apiResponse);
             }
@@ -90,7 +114,7 @@ namespace RestApiProject1.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Roles =PossibleRoles.Role_Admin)]
+        [Authorize(Roles = PossibleRoles.Role_Admin)]
         public async Task<ActionResult<ApiResponse>> CreateVilla([FromBody] VillaCreateDTO villa)
         {
             ApiResponse apiResponse = new ApiResponse();
@@ -113,7 +137,7 @@ namespace RestApiProject1.Controllers
                 Villa myVilla = _mapper.Map<Villa>(villa);
                 apiResponse.IsSuccess = true;
                 apiResponse.statusCode = System.Net.HttpStatusCode.Created;
-                apiResponse.result = (myVilla);
+                apiResponse.result = myVilla;
                 apiResponse.ErrorMessage = null;
                 await _unitOfWork.villaRepository.CreateAsync(myVilla);
                 await _unitOfWork.CommitAsync();

@@ -33,8 +33,13 @@ namespace RespApiProject2_Consumer.Controllers
             return View();
 
         }
-
-        public IActionResult Privacy()
+        public ActionResult RedirectToWebsite()
+        {
+            string url = "https://www.booking.com/index.fr.html?aid=2311236;label=fr-fr-booking-desktop-DCpBIW3k2*WIo8XuzMdB9AS652796013276:pl:ta:p1:p2:ac:ap:neg:fi:tikwd-65526620:lp9055242:li:dec:dm;ws=&gclid=CjwKCAjwkeqkBhAnEiwA5U-uM3UjWSZIzbAoRdWAJExTyBi0rmNOgFJE7v-LRSonZM5DzHjJG2_ddRoCIqkQAvD_BwE";
+            return Redirect(url);
+            
+        }
+        public IActionResult Book()
         {
             return View();
         }

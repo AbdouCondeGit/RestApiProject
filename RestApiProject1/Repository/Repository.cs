@@ -22,13 +22,21 @@ namespace RestApiProject1.Repository
            // _db.SaveChanges();
         }
 
-        public async Task<List<T>> GetAllAsync(string? includeNaviProperties = null)
+        public async Task<List<T>> GetAllAsync( int pageSize , int pageNumber, string? includeNaviProperties = null)
         {
             IQueryable<T> queryable = _dbSet;
             //if(filter != null)
             //{
             //    queryable = queryable.Where(filter);
             //}
+            if (pageSize > 0)
+            {
+                if (pageSize > 100)
+                {
+                    pageSize = 100;
+                }
+                queryable=queryable.Skip(pageSize*(pageNumber-1)).Take(pageSize);
+            }
             if(includeNaviProperties != null)
             {
                 foreach (string navigationProperty in includeNaviProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
