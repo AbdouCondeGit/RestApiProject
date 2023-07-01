@@ -31,7 +31,7 @@ namespace RespApiProject2_Consumer.Service
         {
             return SendHttpRequestAsync<T>(new ApiRequest
             {
-                baseUrl = baseUrlService + "api/v1/VillaValue/DeleteVillaValue" + id,
+                baseUrl = baseUrlService + "api/v1/VillaValue/DeleteVillaValue/" + id,
                 apiRequestType = ApiRequestVerb.DELETE,
 
             });
@@ -51,7 +51,7 @@ namespace RespApiProject2_Consumer.Service
         {
             return SendHttpRequestAsync<T>(new ApiRequest
             {
-                baseUrl=baseUrlService+ "api/v1/VillaValue/getVillaValue" + id,
+                baseUrl=baseUrlService+ "api/v1/VillaValue/GetVillaValue/" + id,
                 apiRequestType = ApiRequestVerb.GET,
 
             });

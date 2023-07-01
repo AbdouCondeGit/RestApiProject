@@ -30,12 +30,12 @@ namespace RestApiProject1.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet]
-        public async Task<ActionResult<ApiResponse>> getVillaValues()
+        public async Task<ActionResult<ApiResponse>> getVillaValues(int pageSize, int pageNumber)
         {
             ApiResponse apiResponse = new ApiResponse();
             try
             {
-                var villas = await _unitOfWork.villaValueRepository.GetAllAsync(1,1,"Villa");
+                var villas = await _unitOfWork.villaValueRepository.GetAllAsync(pageSize,pageNumber,"Villa");
                 if (villas == null)
                 {
                     return NotFound();

@@ -6,12 +6,12 @@
 @model IEnumerable<VillaDTO>
 <div class="container p-3">
     <section>
-        @if (httpAcc.HttpContext.Session.GetString(SD.token) == null ||
+       @* @if (httpAcc.HttpContext.Session.GetString(SD.token) == null ||
         httpAcc.HttpContext.Session.GetString(SD.token).ToString().Length == 0)
         {
                 <h2 class="display-4 text-center text-danger">You must login to see the villas list</h2>
            
-        }
+        }*@
         <div class="row pt-4">
             <div class="col-6">
                 <h2 class="display-4">Villas List</h2>

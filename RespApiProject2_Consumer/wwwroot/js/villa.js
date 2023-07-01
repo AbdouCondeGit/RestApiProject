@@ -11,7 +11,7 @@ function loadDataTable() {
         "columns": [
             { data: 'name', "width": "25%" },
             { data: 'rate', "width": "10%" },
-            { data: 'occupancy', "width": "15%" },
+            { data: 'occupancy', "width": "10%" },
             { data: 'sqft', "width": "10%" },
             { data: 'amenity', "width": "15%" },
             {
@@ -27,7 +27,7 @@ function loadDataTable() {
 
 
                 },
-                "width": "25%"
+                "width": "20%"
 
             },
 
