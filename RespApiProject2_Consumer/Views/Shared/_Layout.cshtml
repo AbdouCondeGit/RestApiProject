@@ -71,7 +71,7 @@
             </div>
         </nav>
     </header>
-    <div class="container-fluid">
+    <div class="container-fluid p-0">
         <main role="main" class="pb-3">
             <partial name="_Notification"></partial>
             @RenderBody()
@@ -80,9 +80,11 @@
     <br />
     <br />
     <footer class="footer">
+       
         <div class="text-center text-info-emphasis">
-            &copy; 2023  Oh My Wonderfull Villa. Developed by <img src="~/css/me.png" class="footer-image"> . Enjoy your journey on this site with all my <i class="bi bi-arrow-through-heart"></i><a asp-area="" asp-controller="Home" asp-action="Privacy"></a>
+            &copy; 2023 Developed by <img src="~/css/me.png" class="footer-image"> . Explore with  <i class="bi bi-arrow-through-heart"></i>. Enjoy your journey!<a asp-area="" asp-controller="Home" asp-action="Privacy"></a>
         </div>
+       
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -90,6 +92,8 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js" asp-append-version="true"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+  
 </html>

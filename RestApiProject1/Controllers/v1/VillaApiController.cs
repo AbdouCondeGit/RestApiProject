@@ -30,7 +30,7 @@ namespace RestApiProject1.Controllers.v1
         [ProducesResponseType(404)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize()]
+       // [Authorize()]
         // [ResponseCache(Duration = 30,Location =ResponseCacheLocation.Any)]
         //[ResponseCache(Duration=30)]
         [ResponseCache(CacheProfileName = "Default30")]

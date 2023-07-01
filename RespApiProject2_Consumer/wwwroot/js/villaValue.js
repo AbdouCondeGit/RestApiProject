@@ -9,9 +9,9 @@ function loadDataTable() {
             url: '/villaValue/getAllVillaValues'
         },
         "columns": [
-            { data: 'villaNo', "width": "15%" },
+            { data: 'villaNo', "width": "10%" },
             { data: 'villa.name', "width": "25%" },
-            { data: 'villa.rate', "width": "15%" },
+            { data: 'villa.rate', "width": "10%" },
             { data: 'villa.occupancy', "width": "15%" },
             { data: 'villa.sqft', "width": "15%" },
             {
@@ -19,8 +19,8 @@ function loadDataTable() {
                 "render": function (data) {
                     return `
                         <div class="w-75 btn-group" role="group">
-                                <a href="/villaValue/edit?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i> Edit</a>
-                                <a onClick=Delete('/villaValue/DeleteVillaValue?id=${data}')  class="btn btn-danger mx-2"> <i class="bi bi-pencil-square" ></i> Delete</a>
+                                <a href="/villaValue/edit?villaNo=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i> Edit</a>
+                                <a onClick=Delete('/villaValue/DeleteVillaValue?villaNo=${data}')  class="btn btn-danger mx-2"> <i class="bi bi-pencil-square" ></i> Delete</a>
                          </div> `
 
 

@@ -92,7 +92,7 @@ namespace RespApiProject2_Consumer.Controllers
                 //VillaUpdateDTO villaFromDb = _mapper.Map<VillaUpdateDTO>(apiResponse.result);
                 //return View(villaFromDb);
             }
-            return NotFound();
+            return RedirectToAction("AccessDenied", "User");
             
 		}
 
@@ -114,13 +114,13 @@ namespace RespApiProject2_Consumer.Controllers
 				}
 				else
 				{
-					response.statusCode = System.Net.HttpStatusCode.BadRequest;
-					response.IsSuccess = false;
-					for (int i = 0; i < response.ErrorMessage.Count; i++)
-					{
-						ModelState.AddModelError(response.ErrorMessage.ToString(), response.ErrorMessage[i]);
-					}
-					return View(villaUpdateDTO);
+                    response.statusCode = System.Net.HttpStatusCode.BadRequest;
+                    response.IsSuccess = false;
+                    for (int i = 0; i < response.ErrorMessage.Count; i++)
+                    {
+                        ModelState.AddModelError(response.ErrorMessage.ToString(), response.ErrorMessage[i]);
+                    }
+                    return View(villaUpdateDTO);
 				}
 
 			}

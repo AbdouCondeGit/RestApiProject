@@ -56,7 +56,7 @@ namespace RespApiProject2_Consumer.Controllers
                     // villas = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(response.result));
                     response.statusCode = System.Net.HttpStatusCode.NoContent;
                     response.IsSuccess = true;
-                    TempData["success"] = "Villa created successfully";
+                    TempData["success"] = "Villa Value created successfully";
                     return RedirectToAction(nameof(Index));
 
                 }
@@ -89,7 +89,7 @@ namespace RespApiProject2_Consumer.Controllers
                 //VillaUpdateDTO villaFromDb = _mapper.Map<VillaUpdateDTO>(apiResponse.result);
                 //return View(villaFromDb);
             }
-            return NotFound();
+            return View();
             
 		}
 
@@ -105,7 +105,7 @@ namespace RespApiProject2_Consumer.Controllers
 					// villas = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(response.result));
 					response.statusCode = System.Net.HttpStatusCode.NoContent;
 					response.IsSuccess = true;
-                    TempData["success"] = "Villa updated successfully";
+                    TempData["success"] = "Villa Value updated successfully";
                     return RedirectToAction(nameof(Index));
 
 				}
