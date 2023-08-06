@@ -9,10 +9,10 @@
         @foreach (var villa in Model)
         {
             <div class="col-md-6">
-                <div class="p-4 villa-card" style="border-radius: 20px; border: 1px solid #ffffff;">
+                <div class="p-4" style="border-radius: 20px; border: 1px solid #ffffff;">
                     <div class="row">
                         <div class="col-4">
-                            <img class="d-block w-100" src="~/js/@villa.ImageUrl" alt="Villa Image">
+                            <img class="d-block w-100 villa-image m-0" src="~/js/@villa.ImageUrl" alt="Villa Image">
                         </div>
                         <div class="col-8">
                             <p class="card-title text-warning" style="font-size: xx-large;">@villa.Name</p>
@@ -42,7 +42,7 @@
 </div>
 }
 <style>
-    .villa-card {
-        height: 280px; /* Remplacez cette valeur par la hauteur souhaitée */
+    .villa-image {
+        height: 150px; /* Remplacez cette valeur par la hauteur souhaitée */
     }
 </style>

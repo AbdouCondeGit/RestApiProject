@@ -194,6 +194,7 @@ namespace RespApiProject2_Consumer.Controllers
 
 
         [HttpDelete]
+       // [Authorize(Roles = PossibleRoles.Role_Admin)]
         public async Task<IActionResult> DeleteVilla(int id)
         {
             ApiResponse apiResponse = _villaService.GetVillaAsync<ApiResponse>(id, HttpContext.Session.GetString(SD.token)).GetAwaiter().GetResult();
@@ -202,7 +203,7 @@ namespace RespApiProject2_Consumer.Controllers
                 ApiResponse response = _villaService.DeleteVillaAsync<ApiResponse>(id, HttpContext.Session.GetString(SD.token)).GetAwaiter().GetResult();
                 return Json(new { success = true, message = "Delete Successful" });
             }
-            return Json(new { success = false, message = "Error while deleting" });
+            return Json(new { success = false, message = "Error while deleting.Please login as Admin" });
             
         }
 

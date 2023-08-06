@@ -36,17 +36,20 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Villa" asp-action="Index">Villa</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Content Management</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item text-white" asp-area="" asp-controller="Villa" asp-action="Index">Villa</a>
+                                <a class="dropdown-item text-white" asp-area="" asp-controller="VillaValue" asp-action="Index">Villa Value</a>
+                                
+                            </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="VillaValue" asp-action="Index">Villa Value</a>
-                        </li>
-                        @*<li class="nav-item">
-                        <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>*@
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="https://github.com/AbdouCondeGit/RestApiProject/tree/master" target="_blank">SourceCode</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Documentation</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item text-white" href="https://github.com/AbdouCondeGit/RestApiProject/tree/master" target="_blank">Source Code</a>
+                                <a class="dropdown-item text-white" href="https://ohmyvillarestapi.azurewebsites.net/" target="_blank">Enpoints on Swagger</a>
+                            </div>
                         </li>
                     </ul>
                     <ul class="navbar-nav">
